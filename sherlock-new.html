@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sherlock Home Inspector — Greater Puget Sound</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;0,900;1,400;1,700&family=EB+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #1a1610;
+    --bg-light: #201c14;
+    --bg-card: #1e1a12;
+    --gold: #c9a84c;
+    --gold-dim: #8a6e2e;
+    --gold-muted: #5a4820;
+    --cream: #e8dfc8;
+    --text: #c8b99a;
+    --text-dim: #6b5e48;
+    --border: #2e2820;
+    --border-light: #3a3228;
+    --white: #f0e8d8;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'EB Garamond', serif;
+    font-size: 18px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── TYPOGRAPHY ── */
+  .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .label-dim {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    line-height: 1.05;
+  }
+  .italic-gold {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    color: var(--gold);
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 56px;
+    height: 80px;
+  }
+  .nav-logo {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    text-decoration: none;
+  }
+  .nav-logo-name {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: #f0e8d8;
+    line-height: 1;
+  }
+  .nav-logo-sub {
+    font-family: monospace;
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: #c9a84c;
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    list-style: none;
+  }
+  .nav-links a {
+    font-family: monospace;
+    font-size: 14px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #d4c4a0;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #f0e8d8; }
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #c9a84c;
+    color: #1a1610;
+    font-family: monospace;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    font-weight: 700;
+    padding: 14px 28px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  .btn-primary:hover { background: #d4b05a; }
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--white);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 12px 24px;
+    border: 1px solid var(--border-light);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: calc(100vh - 80px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+    margin-top: 80px;
+  }
+  .hero-left {
+    padding: 64px 64px 64px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+  }
+  .hero-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .hero-eyebrow-line {
+    width: 32px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .hero-h1 {
+    font-size: clamp(48px, 5.5vw, 80px);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .hero-h1 span { display: block; }
+  .hero-sub {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: clamp(18px, 2vw, 22px);
+    color: var(--text);
+    max-width: 360px;
+    margin-bottom: 48px;
+    line-height: 1.5;
+  }
+  .hero-ctas {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+  .hero-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .hero-link:hover { color: var(--cream); }
+  .hero-right {
+    padding: 64px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+  }
+  .hero-magnifier {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    opacity: 0.25;
+  }
+  .hero-magnifier::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    right: -30px;
+    width: 70px;
+    height: 4px;
+    background: var(--border);
+    transform: rotate(45deg);
+    transform-origin: left center;
+  }
+  .case-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    padding: 24px 28px;
+    position: relative;
+    z-index: 2;
+  }
+  .case-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .case-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: var(--gold);
+    color: var(--bg);
+    padding: 4px 10px;
+    font-weight: 500;
+  }
+  .case-address {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 4px;
+  }
+  .case-meta {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-dim);
+    margin-bottom: 20px;
+  }
+  .case-findings {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .case-findings li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text);
+    letter-spacing: 0.02em;
+  }
+  .finding-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+
+  /* ── TICKER ── */
+  .ticker-bar {
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+    padding: 14px 0;
+    border-top: 1px solid var(--gold-muted);
+  }
+  .ticker-track {
+    display: flex;
+    gap: 0;
+    animation: ticker 30s linear infinite;
+    white-space: nowrap;
+  }
+  .ticker-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    padding: 0 32px;
+    flex-shrink: 0;
+  }
+  .ticker-dot {
+    color: var(--gold);
+    margin-right: 32px;
+  }
+  @keyframes ticker {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-item {
+    padding: 48px 48px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-item:last-child { border-right: none; }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 52px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .stat-number span { color: var(--gold); }
+  .stat-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  /* ── SECTION COMMON ── */
+  .section {
+    border-bottom: 1px solid var(--border);
+  }
+  .split-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .split-left {
+    padding: 80px 64px;
+    border-right: 1px solid var(--border);
+  }
+  .split-right {
+    padding: 80px 64px;
+  }
+  .chapter-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 40px;
+  }
+  .chapter-line {
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+
+  /* ── PHILOSOPHY ── */
+  .philosophy-quote {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.2;
+    margin-bottom: 32px;
+  }
+  .philosophy-quote .italic-gold {
+    font-size: inherit;
+  }
+  .read-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    margin-top: 32px;
+    transition: color 0.2s;
+  }
+  .read-link:hover { color: var(--gold); }
+  .philosophy-body p {
+    color: var(--text);
+    margin-bottom: 20px;
+    font-size: 17px;
+  }
+  .philosophy-body p strong {
+    color: var(--white);
+    font-weight: 500;
+  }
+
+  /* ── INSPECTIONS ── */
+  .section-header {
+    padding: 64px 64px 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 48px;
+  }
+  .section-header-title h2 {
+    font-size: clamp(42px, 5vw, 68px);
+    line-height: 1;
+  }
+  .section-header-desc {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text);
+    text-align: right;
+    align-self: flex-end;
+  }
+  .inspections-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .inspection-card {
+    padding: 64px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+    transition: background 0.3s;
+  }
+  .inspection-card:nth-child(even) { border-right: none; }
+  .inspection-card:hover { background: var(--bg-light); }
+  .inspection-icon {
+    position: absolute;
+    top: 48px;
+    right: 48px;
+    color: var(--gold-muted);
+    font-size: 28px;
+    opacity: 0.6;
+  }
+  .inspection-card-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+    margin-bottom: 24px;
+  }
+  .inspection-card h3 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    line-height: 1.1;
+  }
+  .inspection-card p {
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 28px;
+    line-height: 1.5;
+  }
+  .inspection-features {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+  .inspection-features li {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--text-dim);
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    letter-spacing: 0.04em;
+  }
+  .feature-arrow {
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  .inspection-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+  .price-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    margin-bottom: 4px;
+  }
+  .price {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .case-link {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .case-link:hover { opacity: 0.7; }
+
+  /* ── METHOD ── */
+  .method-header {
+    padding: 80px 64px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+  }
+  .method-header h2 {
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 0.95;
+  }
+  .method-header-right {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 20px;
+    color: var(--text);
+    text-align: right;
+  }
+  .method-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+  .method-step {
+    padding: 48px 40px 64px;
+    border-right: 1px solid var(--border);
+  }
+  .method-step:last-child { border-right: none; }
+  .step-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--text-dim);
+    opacity: 0.4;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .method-step h3 {
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 12px;
+  }
+  .method-step p {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.6;
+  }
+
+  /* ── REVIEWS ── */
+  .reviews-header {
+    padding: 64px 64px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    border-bottom: 1px solid var(--border);
+  }
+  .reviews-header h2 {
+    font-size: clamp(48px, 5vw, 72px);
+    line-height: 1;
+  }
+  .reviews-meta {
+    text-align: right;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+  }
+  .google-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    padding: 8px 16px;
+  }
+  .google-g {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #4285f4;
+  }
+  .stars { color: var(--gold); font-size: 13px; }
+  .google-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .review-count-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 80px;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+  }
+  .review-count-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .reviews-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .review-card {
+    padding: 48px 40px;
+    border-right: 1px solid var(--border);
+  }
+  .review-card:last-child { border-right: none; }
+  .review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .review-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    border: 1px solid var(--border-light);
+    padding: 4px 8px;
+  }
+  .review-text {
+    font-family: 'EB Garamond', serif;
+    font-size: 17px;
+    color: var(--cream);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+  .review-outcome {
+    border-left: 3px solid var(--gold);
+    padding-left: 14px;
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 14px;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+
+  /* ── ABOUT ── */
+  .about-left {
+    padding: 80px 64px;
+    border-right: 1px solid var(--border);
+  }
+  .about-left h2 {
+    font-size: clamp(42px, 4.5vw, 64px);
+    line-height: 1.05;
+    margin-bottom: 36px;
+  }
+  .about-body p {
+    font-size: 17px;
+    color: var(--text);
+    margin-bottom: 20px;
+    line-height: 1.65;
+  }
+  .about-right {
+    padding: 80px 64px;
+  }
+  .credentials-list {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+  .credential-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .credential-check {
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 12px;
+  }
+  .credential-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text);
+  }
+  .about-quote {
+    background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-card) 100%);
+    border-left: 3px solid var(--gold);
+    padding: 28px 32px;
+    margin-top: 8px;
+  }
+  .about-quote p {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  /* ── SERVICE AREA ── */
+  .area-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .area-left {
+    padding: 80px 64px;
+    border-right: 1px solid var(--border);
+  }
+  .area-left h2 {
+    font-size: clamp(42px, 5vw, 64px);
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  .area-desc {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.6;
+    max-width: 360px;
+  }
+  .area-right {
+    padding: 80px 64px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .counties-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border: 1px solid var(--border);
+  }
+  .county-cell {
+    padding: 20px 24px;
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    transition: background 0.2s, color 0.2s;
+    cursor: default;
+  }
+  .county-cell:hover { background: var(--bg-light); color: var(--gold); }
+  .county-cell:nth-child(even) { border-right: none; }
+  .county-cell:nth-last-child(-n+2) { border-bottom: none; }
+
+  /* ── BOOKING FORM ── */
+  .booking-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid var(--border);
+  }
+  .booking-left {
+    padding: 80px 64px;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .booking-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 32px;
+  }
+  .booking-eyebrow-line {
+    width: 28px;
+    height: 1px;
+    background: var(--gold);
+  }
+  .booking-left h2 {
+    font-size: clamp(36px, 4.5vw, 58px);
+    line-height: 1.1;
+    margin-bottom: 24px;
+  }
+  .booking-desc {
+    font-family: 'EB Garamond', serif;
+    font-style: italic;
+    font-size: 17px;
+    color: var(--text);
+    line-height: 1.65;
+    max-width: 400px;
+    margin-bottom: 40px;
+  }
+  .booking-perks {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .perk-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .perk-check {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 11px;
+    margin-top: 2px;
+  }
+  .perk-check-spin {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--gold);
+    font-size: 14px;
+    margin-top: 2px;
+  }
+  .perk-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 2px;
+  }
+  .perk-desc {
+    font-size: 15px;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
+  .booking-right {
+    padding: 64px;
+  }
+  .form-eyebrow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+  }
+  .form-case-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    color: var(--text-dim);
+  }
+  .booking-right h3 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 32px;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-bottom: 16px;
+  }
+  .form-group.full { grid-column: 1 / -1; }
+  label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  input, select, textarea {
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    color: var(--cream);
+    font-family: 'EB Garamond', serif;
+    font-size: 16px;
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--text-dim);
+    font-style: italic;
+  }
+  select { appearance: none; cursor: pointer; color: var(--text-dim); }
+  select:focus, input:focus, textarea:focus {
+    border-color: var(--gold);
+  }
+  textarea { resize: vertical; min-height: 100px; font-style: italic; }
+  .checkbox-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-light);
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: border-color 0.2s;
+  }
+  .checkbox-item:hover { border-color: var(--gold); }
+  .checkbox-item input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    padding: 0;
+    margin: 0;
+    flex-shrink: 0;
+    accent-color: var(--gold);
+  }
+  .checkbox-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+  .submit-btn {
+    width: 100%;
+    background: var(--gold);
+    color: var(--bg);
+    border: none;
+    padding: 18px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    transition: background 0.2s;
+  }
+  .submit-btn:hover { background: #d4b05a; }
+  .form-note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    text-align: center;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 48px 64px 32px;
+    display: grid;
+    grid-template-columns: 200px 1fr auto;
+    gap: 64px;
+    align-items: start;
+  }
+  .footer-brand {}
+  .footer-brand-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--white);
+  }
+  .footer-brand-sub {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-top: 2px;
+    margin-bottom: 8px;
+  }
+  .footer-est {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    color: var(--text-dim);
+  }
+  .footer-nav {
+    display: flex;
+    gap: 40px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-nav a {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .footer-nav a:hover { color: var(--gold); }
+  .footer-contact {
+    text-align: right;
+  }
+  .footer-phone {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    color: var(--cream);
+    margin-bottom: 6px;
+  }
+  .footer-email {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .footer-counties {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    color: var(--text-dim);
+    line-height: 1.8;
+  }
+  .footer-bottom {
+    border-top: 1px solid var(--border);
+    margin-top: 32px;
+    padding-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-copy {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-dim);
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 1024px) {
+    nav { padding: 0 24px; }
+    .nav-links { gap: 24px; }
+    #hero { grid-template-columns: 1fr; }
+    .hero-left { padding: 60px 32px; border-right: none; border-bottom: 1px solid var(--border); }
+    .hero-right { padding: 48px 32px; }
+    .split-section { grid-template-columns: 1fr; }
+    .split-left { border-right: none; border-bottom: 1px solid var(--border); }
+    .split-right { padding: 60px 32px; }
+    .split-left { padding: 60px 32px; }
+    .stats-bar { grid-template-columns: 1fr 1fr; }
+    .stat-item { padding: 36px 32px; }
+    .stat-item:nth-child(2) { border-right: none; }
+    .stat-item:nth-child(3) { border-top: 1px solid var(--border); }
+    .section-header { grid-template-columns: 1fr; padding: 48px 32px; gap: 16px; }
+    .section-header-desc { text-align: left; }
+    .inspections-grid { grid-template-columns: 1fr; }
+    .inspection-card { border-right: none; }
+    .inspection-card:nth-child(even) { border-right: none; }
+    .method-header { grid-template-columns: 1fr; padding: 60px 32px; gap: 16px; }
+    .method-header-right { text-align: left; }
+    .method-steps { grid-template-columns: 1fr 1fr; }
+    .method-step:nth-child(even) { border-right: none; }
+    .method-step:nth-child(3), .method-step:nth-child(4) { border-top: 1px solid var(--border); }
+    .reviews-header { grid-template-columns: 1fr; padding: 48px 32px; gap: 24px; }
+    .reviews-meta { text-align: left; align-items: flex-start; }
+    .reviews-grid { grid-template-columns: 1fr; }
+    .review-card { border-right: none; border-bottom: 1px solid var(--border); }
+    .area-section { grid-template-columns: 1fr; }
+    .area-left { border-right: none; border-bottom: 1px solid var(--border); padding: 60px 32px; }
+    .area-right { padding: 60px 32px; }
+    .booking-section { grid-template-columns: 1fr; }
+    .booking-left { border-right: none; border-bottom: 1px solid var(--border); padding: 60px 32px; }
+    .booking-right { padding: 48px 32px; }
+    footer { grid-template-columns: 1fr; gap: 32px; padding: 40px 32px 24px; }
+    .footer-contact { text-align: left; }
+    .footer-nav { justify-content: flex-start; }
+    .about-left { padding: 60px 32px; }
+    .about-right { padding: 60px 32px; }
+    .form-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo" style="text-decoration:none">
+    <div style="font-size:28px;font-weight:700;color:#f0e8d8;font-family:Georgia,serif;line-height:1">Sherlock</div>
+    <div style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#c9a84c;font-family:monospace">Home Inspector</div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#inspections" style="font-size:15px;color:#d4c4a0;text-decoration:none;font-family:monospace;text-transform:uppercase;letter-spacing:0.12em">Inspections</a></li>
+    <li><a href="#method" style="font-size:15px;color:#d4c4a0;text-decoration:none;font-family:monospace;text-transform:uppercase;letter-spacing:0.12em">The Method</a></li>
+    <li><a href="#about" style="font-size:15px;color:#d4c4a0;text-decoration:none;font-family:monospace;text-transform:uppercase;letter-spacing:0.12em">About</a></li>
+    <li><a href="#realtors" style="font-size:15px;color:#d4c4a0;text-decoration:none;font-family:monospace;text-transform:uppercase;letter-spacing:0.12em">For Realtors</a></li>
+  </ul>
+  <a href="#book" style="background:#c9a84c;color:#1a1610;font-family:monospace;font-size:13px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;padding:14px 28px;text-decoration:none;display:inline-block">Open a Case</a>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-line"></div>
+      <span class="label">New Investigation Available — Open a Case</span>
+    </div>
+    <h1 class="hero-h1">
+      <span>Every Home</span>
+      <span>Hides a</span>
+      <span class="italic-gold" style="font-size:inherit;">Story.</span>
+    </h1>
+    <p class="hero-sub">We read the clues your seller hopes you'll miss. Structural whispers, hidden moisture, aging systems — nothing escapes a Sherlock investigation.</p>
+    <div class="hero-ctas">
+      <a href="#book" class="btn-primary">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Open Your Case
+      </a>
+      <a href="#" class="hero-link">View Sample Report →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-magnifier"></div>
+    <div class="case-card">
+      <div class="case-card-header">
+        <span class="label-dim">Case · SHI-2025-0847</span>
+        <span class="case-badge">Completed</span>
+      </div>
+      <div class="case-address">42 Elmwood Drive</div>
+      <div class="case-meta">1,940 sq ft · Built 1987 · Colonial</div>
+      <ul class="case-findings">
+        <li><span class="finding-dot"></span>Roof flashing separation — moisture ingress likely</li>
+        <li><span class="finding-dot"></span>Main panel undersized for current load</li>
+        <li><span class="finding-dot"></span>Crawlspace vapor barrier failure (36% coverage)</li>
+        <li><span class="finding-dot"></span>HVAC filter overdue — 14 months without service</li>
+        <li><span class="finding-dot"></span>3 GFCI outlets absent in wet zones</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-number">1,500<span>+</span></div>
+    <div class="stat-label">Cases Closed</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">24<span style="font-size:32px;color:var(--gold)">hr</span></div>
+    <div class="stat-label">Report Delivery</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">100<span>%</span></div>
+    <div class="stat-label">Evidence Backed</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-number">67</div>
+    <div class="stat-label">Google Reviews</div>
+  </div>
+</div>
+
+<!-- TICKER -->
+<div class="ticker-bar">
+  <div class="ticker-track">
+    <span class="ticker-item">Inspections <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Pre-Listing Inspections <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">New Construction Inspections <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Certified Home Inspector <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">InterNACHI Member <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">24-Hour Reports <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Radon Testing <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Thermal Imaging Included <span class="ticker-dot">•</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item">Inspections <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Pre-Listing Inspections <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">New Construction Inspections <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Certified Home Inspector <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">InterNACHI Member <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">24-Hour Reports <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Radon Testing <span class="ticker-dot">•</span></span>
+    <span class="ticker-item">Thermal Imaging Included <span class="ticker-dot">•</span></span>
+  </div>
+</div>
+
+<!-- PHILOSOPHY -->
+<section class="split-section">
+  <div class="split-left">
+    <div class="chapter-label">
+      <div class="chapter-line"></div>
+      <span class="label">Chapter 01 — The Philosophy</span>
+    </div>
+    <div class="philosophy-quote">
+      "Most inspections take 3 hours. Most buyers spend 3 minutes reading the report. <span class="italic-gold">We write reports people actually read."</span>
+    </div>
+    <a href="#" class="read-link">Read Our Philosophy →</a>
+  </div>
+  <div class="split-right">
+    <div class="philosophy-body">
+      <p><strong>The standard home inspection is a liability document.</strong> It's written to protect the inspector, not inform the buyer. Dense boilerplate, vague language, buried findings — by the time you've read page twelve, you've forgotten what was on page three.</p>
+      <p>We do it differently. Every Sherlock report is organized by severity, written in plain language, and built around what you actually need to know: what's wrong, how wrong it is, and what it will cost you if you ignore it.</p>
+      <p>The investigation itself is methodical — roof to foundation, systems to structure, attic to crawlspace. We bring thermal imaging to every inspection, not as an upsell, but because heat signatures reveal what the eye cannot. Moisture behind walls. Air leaks in attics. Overloaded circuits hidden inside finished ceilings.</p>
+      <p>The finding is only half the job. The other half is making sure you understand it before you sign anything.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INSPECTIONS -->
+<section id="inspections">
+  <div class="section-header">
+    <div class="section-header-title">
+      <div class="chapter-label" style="margin-bottom:16px">
+        <div class="chapter-line"></div>
+        <span class="label">Chapter 02 — Cases We Investigate</span>
+      </div>
+      <h2>Cases We <span class="italic-gold">Investigate</span></h2>
+    </div>
+    <div class="section-header-desc">Every inspection is a tailored investigation —<br>not a checklist, not a formality.</div>
+  </div>
+  <div class="inspections-grid">
+    <div class="inspection-card">
+      <div class="inspection-card-num">Case Type · 01</div>
+      <div class="inspection-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </div>
+      <h3>Buyer's<br>Inspection</h3>
+      <p>The full investigation. We arrive before you commit and leave no stone unturned — roof to foundation, attic to crawlspace.</p>
+      <ul class="inspection-features">
+        <li><span class="feature-arrow">↳</span> Full structural &amp; systems evaluation</li>
+        <li><span class="feature-arrow">↳</span> 200+ point documented assessment</li>
+        <li><span class="feature-arrow">↳</span> Thermal imaging scan included</li>
+        <li><span class="feature-arrow">↳</span> Written report within 24 hours</li>
+      </ul>
+      <div class="inspection-footer">
+        <div>
+          <div class="price-label">Starting From</div>
+          <div class="price">$375</div>
+        </div>
+        <a href="#book" class="case-link">Open this case →</a>
+      </div>
+    </div>
+    <div class="inspection-card">
+      <div class="inspection-card-num">Case Type · 02</div>
+      <div class="inspection-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg>
+      </div>
+      <h3>Pre-Listing<br>Inspection</h3>
+      <p>Know what buyers will find before they find it. Sellers who inspect first negotiate from strength, not surprise.</p>
+      <ul class="inspection-features">
+        <li><span class="feature-arrow">↳</span> Same rigor as a buyer inspection</li>
+        <li><span class="feature-arrow">↳</span> Remediation priority ranking</li>
+        <li><span class="feature-arrow">↳</span> Shareable summary for disclosures</li>
+        <li><span class="feature-arrow">↳</span> Listing-ready certification letter</li>
+      </ul>
+      <div class="inspection-footer">
+        <div>
+          <div class="price-label">Starting From</div>
+          <div class="price">$325</div>
+        </div>
+        <a href="#book" class="case-link">Open this case →</a>
+      </div>
+    </div>
+    <div class="inspection-card">
+      <div class="inspection-card-num">Case Type · 03</div>
+      <div class="inspection-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+      </div>
+      <h3>Radon<br>Investigation</h3>
+      <p>The invisible threat. Radon is the second leading cause of lung cancer in the US — and most homeowners never know it's there.</p>
+      <ul class="inspection-features">
+        <li><span class="feature-arrow">↳</span> 48-hour continuous monitor test</li>
+        <li><span class="feature-arrow">↳</span> EPA-approved methodology</li>
+        <li><span class="feature-arrow">↳</span> Digital report with hourly readings</li>
+        <li><span class="feature-arrow">↳</span> Can be bundled with any inspection</li>
+      </ul>
+      <div class="inspection-footer">
+        <div>
+          <div class="price-label">Starting From</div>
+          <div class="price">$150</div>
+        </div>
+        <a href="#book" class="case-link">Open this case →</a>
+      </div>
+    </div>
+    <div class="inspection-card">
+      <div class="inspection-card-num">Case Type · 04</div>
+      <div class="inspection-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </div>
+      <h3>New Construction<br>Inspection</h3>
+      <p>"New" doesn't mean flawless. Builder defects caught before closing cost nothing to fix. After? A different story entirely.</p>
+      <ul class="inspection-features">
+        <li><span class="feature-arrow">↳</span> Pre-drywall phase inspection</li>
+        <li><span class="feature-arrow">↳</span> Final walkthrough inspection</li>
+        <li><span class="feature-arrow">↳</span> Builder-ready findings document</li>
+        <li><span class="feature-arrow">↳</span> Punch list generation</li>
+      </ul>
+      <div class="inspection-footer">
+        <div>
+          <div class="price-label">Starting From</div>
+          <div class="price">$400</div>
+        </div>
+        <a href="#book" class="case-link">Open this case →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section id="method">
+  <div class="method-header">
+    <div>
+      <div class="chapter-label" style="margin-bottom:16px">
+        <div class="chapter-line"></div>
+        <span class="label">Chapter 03 — The Method</span>
+      </div>
+      <h2>The <span class="italic-gold">Method</span></h2>
+    </div>
+    <div class="method-header-right">Four steps, no shortcuts, no ambiguity. This is<br>how every case is run.</div>
+  </div>
+  <div class="method-steps">
+    <div class="method-step">
+      <div class="step-number">01</div>
+      <h3>Open the Case</h3>
+      <p>Book online in under 3 minutes. We confirm within the hour and send a case number with every detail you need before we arrive.</p>
+    </div>
+    <div class="method-step">
+      <div class="step-number">02</div>
+      <h3>The Investigation</h3>
+      <p>A 2–4 hour methodical walkthrough of every accessible system and surface. You're welcome — and encouraged — to attend.</p>
+    </div>
+    <div class="method-step">
+      <div class="step-number">03</div>
+      <h3>Evidence Filed</h3>
+      <p>Your full report, with photographs and severity rankings for every finding, delivered within 24 hours of the inspection.</p>
+    </div>
+    <div class="method-step">
+      <div class="step-number">04</div>
+      <h3>Case Briefing</h3>
+      <p>We walk you through every finding by phone. No jargon. No upsells. And we don't disappear after — you can reach us anytime with questions about your report.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="reviews-header">
+    <div>
+      <div class="chapter-label" style="margin-bottom:16px">
+        <div class="chapter-line"></div>
+        <span class="label">Chapter 04 — The Record</span>
+      </div>
+      <h2>Case Files <span class="italic-gold" style="font-size:inherit;">Don't Lie</span></h2>
+    </div>
+    <div class="reviews-meta">
+      <div class="google-badge">
+        <span class="google-g">G</span>
+        <span class="stars">★★★★★</span>
+        <span class="google-text">5-Star Google Rating</span>
+      </div>
+      <div class="review-count-big">67</div>
+      <div class="review-count-sub">Verified Google Reviews</div>
+    </div>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card">
+      <div class="review-header">
+        <span class="stars" style="font-size:16px">★★★★★</span>
+        <span class="review-tag">Buyer Inspection</span>
+      </div>
+      <p class="review-text">"He found moisture intrusion behind the master bath tile that two other inspectors had missed across three previous deals on that house. The report was the clearest document I've received in real estate."</p>
+      <div class="review-outcome">Finding saved client ~$14,000 in undetected water damage</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <span class="stars" style="font-size:16px">★★★★★</span>
+        <span class="review-tag">Pre-Listing</span>
+      </div>
+      <p class="review-text">"The report format is unlike anything else in the market. My clients reference it constantly — and the buyers trusted it. We listed knowing every issue, negotiated from strength, and closed without a single inspection contingency."</p>
+      <div class="review-outcome">Listing sold in 6 days. No inspection contingencies from buyer.</div>
+    </div>
+    <div class="review-card">
+      <div class="review-header">
+        <span class="stars" style="font-size:16px">★★★★★</span>
+        <span class="review-tag">New Construction</span>
+      </div>
+      <p class="review-text">"My builder told me new construction doesn't need an inspection. The Sherlock report had 23 items — insulation gaps, HVAC duct issues, missing flashing. The builder fixed all 23 before we closed. Every single one."</p>
+      <div class="review-outcome">23 defects documented. Builder corrected all before closing date.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="split-section">
+  <div class="about-left split-left">
+    <div class="chapter-label">
+      <div class="chapter-line"></div>
+      <span class="label">Chapter 05 — The Investigator</span>
+    </div>
+    <h2>The Inspector Behind <span class="italic-gold">the Badge.</span></h2>
+    <div class="about-body" style="margin-top:28px">
+      <p>Every Sherlock inspection is performed by the same person who answers your questions, writes your report, and walks you through the findings. There are no subcontractors, no handoffs, no junior inspectors sent in your place.</p>
+      <p>The methodology was built on a single principle: inspect every property as though you're the one buying it. The findings go in the report. All of them. Not the ones that are easy to explain, not the ones that won't slow the deal — all of them.</p>
+      <p>Five years, 1,500+ cases, and the same standard on every one. That's not a marketing claim — it's what the record shows.</p>
+    </div>
+    <a href="#" class="read-link">Read the Full Dossier →</a>
+  </div>
+  <div class="about-right split-right">
+    <ul class="credentials-list">
+      <li class="credential-item">
+        <div class="credential-check">✓</div>
+        <span class="credential-text">InterNACHI Certified Inspector</span>
+      </li>
+      <li class="credential-item">
+        <div class="credential-check">✓</div>
+        <span class="credential-text">State Licensed — Home Inspector</span>
+      </li>
+      <li class="credential-item">
+        <div class="credential-check">✓</div>
+        <span class="credential-text">Thermal Imaging Certified (Level I)</span>
+      </li>
+      <li class="credential-item">
+        <div class="credential-check">✓</div>
+        <span class="credential-text">1,500+ Inspections Filed</span>
+      </li>
+      <li class="credential-item">
+        <div class="credential-check">✓</div>
+        <span class="credential-text">5 Years Field Experience</span>
+      </li>
+      <li class="credential-item">
+        <div class="credential-check">✓</div>
+        <span class="credential-text">EPA Radon Testing Certified</span>
+      </li>
+    </ul>
+    <div class="about-quote">
+      <p>"The inspector who is too cautious to document a finding isn't protecting you — they're protecting themselves. That's not how we operate."</p>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICE AREA -->
+<section class="area-section">
+  <div class="area-left">
+    <div class="chapter-label" style="margin-bottom:24px">
+      <div class="chapter-line"></div>
+      <span class="label">Greater Puget Sound</span>
+    </div>
+    <h2>Where We <span class="italic-gold" style="font-size:inherit;">Investigate</span></h2>
+    <p class="area-desc" style="margin-top:20px">Serving residential and commercial properties across the greater Puget Sound region. If you're buying, selling, or building in any of these counties — we're your investigator.</p>
+  </div>
+  <div class="area-right">
+    <div class="counties-grid">
+      <div class="county-cell">King County</div>
+      <div class="county-cell">Pierce County</div>
+      <div class="county-cell">Thurston County</div>
+      <div class="county-cell">Snohomish County</div>
+      <div class="county-cell">Lewis County</div>
+      <div class="county-cell">Skagit County</div>
+      <div class="county-cell">Kitsap County</div>
+      <div class="county-cell" style="background:var(--bg-light);color:var(--text-dim);cursor:default">& Surrounding Areas</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING FORM -->
+<section id="book" class="booking-section">
+  <div class="booking-left">
+    <div class="booking-eyebrow">
+      <div class="booking-eyebrow-line"></div>
+      <span class="label">Open a New Case</span>
+    </div>
+    <h2>Your home's secrets won't wait. <span class="italic-gold">Neither should you.</span></h2>
+    <p class="booking-desc">Most inspections are scheduled within 24 hours of booking. Reports delivered within 24 hours after that. And we remain available to you long after the report lands — questions welcome, always.</p>
+    <ul class="booking-perks">
+      <li class="perk-item">
+        <div class="perk-check">✓</div>
+        <div>
+          <div class="perk-title">Flat-rate pricing, no surprises</div>
+          <div class="perk-desc">Price quoted at booking. No add-on fees at the door.</div>
+        </div>
+      </li>
+      <li class="perk-item">
+        <div class="perk-check">✓</div>
+        <div>
+          <div class="perk-title">You're invited to attend</div>
+          <div class="perk-desc">Walk with the inspector. Ask every question. It's your house.</div>
+        </div>
+      </li>
+      <li class="perk-item">
+        <div class="perk-check">✓</div>
+        <div>
+          <div class="perk-title">Report debrief included</div>
+          <div class="perk-desc">A phone call to walk through every finding. No charge.</div>
+        </div>
+      </li>
+      <li class="perk-item">
+        <div class="perk-check">✓</div>
+        <div>
+          <div class="perk-title">We don't disappear after delivery</div>
+          <div class="perk-desc">Questions about your report a week later? A year later? Call or email — we're here.</div>
+        </div>
+      </li>
+      <li class="perk-item">
+        <div class="perk-check-spin">↻</div>
+        <div>
+          <div class="perk-title">Satisfaction guarantee</div>
+          <div class="perk-desc">Not satisfied with the inspection? We'll refund in full.</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="booking-right">
+    <div class="form-eyebrow">
+      <span class="label-dim">Case Intake Form</span>
+      <span class="form-case-num">SHI-2026-5414</span>
+    </div>
+    <h3>Open This Case</h3>
+    <form onsubmit="return false;">
+      <div class="form-grid">
+        <div class="form-group">
+          <label>First Name</label>
+          <input type="text" placeholder="Jane">
+        </div>
+        <div class="form-group">
+          <label>Last Name</label>
+          <input type="text" placeholder="Smith">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" placeholder="jane@email.com">
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label>
+          <input type="tel" placeholder="(253) 000-0000">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Property Address</label>
+        <input type="text" placeholder="1842 Rainier Ave S, Seattle, WA 98144">
+      </div>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Square Footage</label>
+          <select>
+            <option value="">Select range</option>
+            <option>Under 1,000 sq ft</option>
+            <option>1,000 – 1,500 sq ft</option>
+            <option>1,500 – 2,000 sq ft</option>
+            <option>2,000 – 2,500 sq ft</option>
+            <option>2,500 – 3,000 sq ft</option>
+            <option>3,000 – 4,000 sq ft</option>
+            <option>4,000+ sq ft</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Year Built</label>
+          <input type="text" placeholder="e.g. 1987">
+        </div>
+      </div>
+      <div style="margin-bottom:6px"><label>Inspection Type(s)</label></div>
+      <div class="checkbox-grid">
+        <label class="checkbox-item">
+          <input type="checkbox" name="type" value="buyer">
+          <span class="checkbox-label">Buyer's Inspection</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="type" value="prelisting">
+          <span class="checkbox-label">Pre-Listing Inspection</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="type" value="radon">
+          <span class="checkbox-label">Radon Testing</span>
+        </label>
+        <label class="checkbox-item">
+          <input type="checkbox" name="type" value="newconstruction">
+          <span class="checkbox-label">New Construction</span>
+        </label>
+      </div>
+      <div class="form-group">
+        <label>Anything We Should Know</label>
+        <textarea placeholder="Access notes, concerns, specific areas of interest..."></textarea>
+      </div>
+      <button type="submit" class="submit-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Open This Case
+      </button>
+      <p class="form-note">We'll confirm availability and pricing within 2 hours. No payment required to schedule.</p>
+    </form>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">
+    <div class="footer-brand-name">Sherlock</div>
+    <div class="footer-brand-sub">Home Inspector</div>
+    <div class="footer-est">Est. 2020</div>
+  </div>
+  <nav class="footer-nav">
+    <a href="#inspections">Inspections</a>
+    <a href="#method">The Method</a>
+    <a href="#about">About</a>
+    <a href="#book">Book</a>
+    <a href="#realtors">For Realtors</a>
+  </nav>
+  <div class="footer-contact">
+    <div class="footer-phone">(253) 234-5065 · <a href="mailto:open@sherlockinspector.com" style="color:var(--gold);text-decoration:none">open@sherlockinspector.com</a></div>
+    <div class="footer-counties">Serving King · Pierce · Thurston · Snohomish · Lewis · Skagit · Kitsap</div>
+  </div>
+  <div class="footer-bottom" style="grid-column:1/-1">
+    <div class="footer-copy">© 2026 Sherlock Home Inspector. All rights reserved.</div>
+    <div class="footer-copy">Greater Puget Sound Region</div>
+  </div>
+</footer>
+
+</body>
+</html>
